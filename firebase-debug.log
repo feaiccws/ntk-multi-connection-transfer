@@ -1,0 +1,46 @@
+[debug] [2026-05-14T22:56:03.419Z] ----------------------------------------------------------------------
+[debug] [2026-05-14T22:56:03.421Z] Command:       /home/ntk/.nvm/versions/node/v24.15.0/bin/node /home/ntk/.nvm/versions/node/v24.15.0/bin/firebase apps:create web NTK-FlowBridge --project ntk-ftp-manager
+[debug] [2026-05-14T22:56:03.422Z] CLI Version:   15.15.0
+[debug] [2026-05-14T22:56:03.422Z] Platform:      linux
+[debug] [2026-05-14T22:56:03.422Z] Node Version:  v24.15.0
+[debug] [2026-05-14T22:56:03.422Z] Time:          Thu May 14 2026 23:56:03 GMT+0100 (West Africa Time)
+[debug] [2026-05-14T22:56:03.422Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-05-14T22:56:03.448Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-05-14T22:56:03.448Z] > authorizing via signed-in user (feaiccws@gmail.com)
+[info] Create your WEB app in project ntk-ftp-manager:
+[debug] [2026-05-14T22:56:03.454Z] Checked if tokens are valid: true, expires at: 1778802408548
+[debug] [2026-05-14T22:56:03.454Z] Checked if tokens are valid: true, expires at: 1778802408548
+[debug] [2026-05-14T22:56:03.455Z] >>> [apiv2][query] POST https://firebase.googleapis.com/v1beta1/projects/ntk-ftp-manager/webApps [none]
+[debug] [2026-05-14T22:56:03.456Z] >>> [apiv2][body] POST https://firebase.googleapis.com/v1beta1/projects/ntk-ftp-manager/webApps {"displayName":"NTK-FlowBridge"}
+[debug] [2026-05-14T22:56:04.433Z] <<< [apiv2][status] POST https://firebase.googleapis.com/v1beta1/projects/ntk-ftp-manager/webApps 403
+[debug] [2026-05-14T22:56:04.433Z] <<< [apiv2][body] POST https://firebase.googleapis.com/v1beta1/projects/ntk-ftp-manager/webApps {"error":{"code":403,"message":"The caller does not have permission","status":"PERMISSION_DENIED"}}
+[debug] [2026-05-14T22:56:04.434Z] Request to https://firebase.googleapis.com/v1beta1/projects/ntk-ftp-manager/webApps had HTTP Error: 403, The caller does not have permission
+[debug] [2026-05-14T22:56:04.436Z] FirebaseError: Request to https://firebase.googleapis.com/v1beta1/projects/ntk-ftp-manager/webApps had HTTP Error: 403, The caller does not have permission
+    at responseToError (/home/ntk/.nvm/versions/node/v24.15.0/lib/node_modules/firebase-tools/lib/responseToError.js:53:12)
+    at RetryOperation._fn (/home/ntk/.nvm/versions/node/v24.15.0/lib/node_modules/firebase-tools/lib/apiv2.js:333:77)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+[error] 
+[error] Error: Failed to create Web app for project ntk-ftp-manager. See firebase-debug.log for more info.
+[debug] [2026-05-14T22:56:48.536Z] ----------------------------------------------------------------------
+[debug] [2026-05-14T22:56:48.538Z] Command:       /home/ntk/.nvm/versions/node/v24.15.0/bin/node /home/ntk/.nvm/versions/node/v24.15.0/bin/firebase apps:sdkconfig --project ntk-ftp-manager
+[debug] [2026-05-14T22:56:48.539Z] CLI Version:   15.15.0
+[debug] [2026-05-14T22:56:48.539Z] Platform:      linux
+[debug] [2026-05-14T22:56:48.539Z] Node Version:  v24.15.0
+[debug] [2026-05-14T22:56:48.539Z] Time:          Thu May 14 2026 23:56:48 GMT+0100 (West Africa Time)
+[debug] [2026-05-14T22:56:48.540Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-05-14T22:56:48.578Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-05-14T22:56:48.578Z] > authorizing via signed-in user (feaiccws@gmail.com)
+[debug] [2026-05-14T22:56:48.582Z] Checked if tokens are valid: true, expires at: 1778802408548
+[debug] [2026-05-14T22:56:48.583Z] Checked if tokens are valid: true, expires at: 1778802408548
+[debug] [2026-05-14T22:56:48.584Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/ntk-ftp-manager:searchApps pageSize=100
+[debug] [2026-05-14T22:56:49.440Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/ntk-ftp-manager:searchApps 403
+[debug] [2026-05-14T22:56:49.441Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/ntk-ftp-manager:searchApps {"error":{"code":403,"message":"The caller does not have permission","status":"PERMISSION_DENIED"}}
+[debug] [2026-05-14T22:56:49.443Z] Request to https://firebase.googleapis.com/v1beta1/projects/ntk-ftp-manager:searchApps?pageSize=100 had HTTP Error: 403, The caller does not have permission
+[debug] [2026-05-14T22:56:49.445Z] FirebaseError: Request to https://firebase.googleapis.com/v1beta1/projects/ntk-ftp-manager:searchApps?pageSize=100 had HTTP Error: 403, The caller does not have permission
+    at responseToError (/home/ntk/.nvm/versions/node/v24.15.0/lib/node_modules/firebase-tools/lib/responseToError.js:53:12)
+    at RetryOperation._fn (/home/ntk/.nvm/versions/node/v24.15.0/lib/node_modules/firebase-tools/lib/apiv2.js:333:77)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+[error] 
+[error] Error: Failed to list Firebase apps. See firebase-debug.log for more info.

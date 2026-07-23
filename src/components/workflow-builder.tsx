@@ -385,6 +385,10 @@ function WorkflowCard({
   );
 }
 
+function generateWorkflowId(): string {
+  return Date.now().toString();
+}
+
 function WorkflowModal({
   workflow,
   onClose,
@@ -402,7 +406,7 @@ function WorkflowModal({
 
   const addStep = (template: { name: string; icon: string }) => {
     const newStep: WorkflowStep = {
-      id: Date.now().toString(),
+      id: generateWorkflowId(),
       type: stepType,
       name: template.name,
       icon: template.icon,
@@ -418,7 +422,7 @@ function WorkflowModal({
 
   const handleSave = () => {
     onSave({
-      id: workflow?.id || Date.now().toString(),
+      id: workflow?.id || generateWorkflowId(),
       name,
       description,
       status: workflow?.status || "draft",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback, useRef } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import {
   Folder,
   File,
@@ -47,7 +47,7 @@ export default function FileManager() {
   const [selectedConnection, setSelectedConnection] = useState<Connection | null>(null);
   const [currentPath, setCurrentPath] = useState("/");
   const [files, setFiles] = useState<FileItem[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [selectedFiles, setSelectedFiles] = useState<Set<string>>(new Set());
   const [search, setSearch] = useState("");
   const [viewMode, setViewMode] = useState<"grid" | "list">("list");
@@ -93,8 +93,10 @@ export default function FileManager() {
     }
   }, []);
 
-  const fetchFiles = useCallback(async (path: string = currentPath, connId?: string) => {
-    setLoading(true);
+  const fetchFiles = useCallback(async (path: string = currentPath, connId?: string, showLoading = false) => {
+    if (showLoading) {
+      setLoading(true);
+    }
     try {
       const params = new URLSearchParams({
         path,
@@ -110,23 +112,27 @@ export default function FileManager() {
     }
   }, [currentPath]);
 
-  const loadFiles = useCallback(async () => {
-    const leftFiles = await fetchFiles(currentPath, selectedConnection?.id);
+  const loadFiles = useCallback(async (showLoading = false) => {
+    const leftFiles = await fetchFiles(currentPath, selectedConnection?.id, showLoading);
     setFiles(leftFiles);
     
     if (dualPane) {
-      const rightFiles = await fetchFiles(rightPanePath, rightPaneConnection?.id);
+      const rightFiles = await fetchFiles(rightPanePath, rightPaneConnection?.id, showLoading);
       setRightPaneFiles(rightFiles);
     }
   }, [fetchFiles, currentPath, selectedConnection, dualPane, rightPanePath, rightPaneConnection]);
 
   useEffect(() => {
-    fetchConnections();
-    fetchBookmarks();
+    queueMicrotask(() => {
+      fetchConnections();
+      fetchBookmarks();
+    });
   }, [fetchConnections, fetchBookmarks]);
 
   useEffect(() => {
-    loadFiles();
+    queueMicrotask(() => {
+      loadFiles(false);
+    });
   }, [loadFiles]);
 
   // Add to recent files
@@ -167,14 +173,14 @@ export default function FileManager() {
     setSelectedFiles(newSelected);
   };
 
-  const selectAll = () => {
+  const selectAll = useCallback(() => {
     const currentFiles = activePane === "left" ? files : rightPaneFiles;
     if (selectedFiles.size === currentFiles.length) {
       setSelectedFiles(new Set());
     } else {
       setSelectedFiles(new Set(currentFiles.map((f) => f.path)));
     }
-  };
+  }, [activePane, files, rightPaneFiles, selectedFiles.size]);
 
   const getSelectedItems = (): FileItem[] => {
     const currentFiles = activePane === "left" ? files : rightPaneFiles;
@@ -299,7 +305,7 @@ export default function FileManager() {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedFiles, dualPane]);
+  }, [selectedFiles, dualPane, selectAll]);
 
   // Close context menu on click outside
   useEffect(() => {
@@ -499,7 +505,7 @@ export default function FileManager() {
               </button>
 
               {connections.map((conn) => {
-                const Icon = getConnectionTypeIcon(conn.type);
+                const connIcon = getConnectionTypeIcon(conn.type);
                 const isSelected = selectedConnection?.id === conn.id;
                 return (
                   <button
@@ -523,7 +529,7 @@ export default function FileManager() {
                       "w-8 h-8 rounded-lg flex items-center justify-center",
                       isSelected ? "bg-primary-100" : "bg-surface-100"
                     )}>
-                      <Icon size={16} />
+                      {React.createElement(connIcon, { size: 16 })}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">{conn.name}</p>
@@ -583,7 +589,7 @@ export default function FileManager() {
             onSelectAll={selectAll}
             onSearch={setSearch}
             onViewModeChange={setViewMode}
-            onRefresh={loadFiles}
+            onRefresh={() => loadFiles(true)}
             onContextMenu={handleContextMenu}
             onPreview={handlePreview}
             onDragEnter={() => setIsDragging(true)}
@@ -621,7 +627,7 @@ export default function FileManager() {
               onSelectAll={selectAll}
               onSearch={() => {}}
               onViewModeChange={setViewMode}
-              onRefresh={loadFiles}
+              onRefresh={() => loadFiles(true)}
               onContextMenu={handleContextMenu}
               onPreview={handlePreview}
               onDragEnter={() => {}}
@@ -653,7 +659,7 @@ export default function FileManager() {
             showResult("success", msg);
             setShowZipModal(false);
             setSelectedFiles(new Set());
-            loadFiles();
+            loadFiles(true);
           }}
         />
       )}
@@ -668,7 +674,7 @@ export default function FileManager() {
             showResult("success", msg);
             setShowUnzipModal(false);
             setSelectedFiles(new Set());
-            loadFiles();
+            loadFiles(true);
           }}
         />
       )}
@@ -682,7 +688,7 @@ export default function FileManager() {
             showResult("success", msg);
             setShowDeleteModal(false);
             setSelectedFiles(new Set());
-            loadFiles();
+            loadFiles(true);
           }}
         />
       )}
@@ -696,7 +702,7 @@ export default function FileManager() {
             showResult("success", msg);
             setShowRenameModal(false);
             setSelectedFiles(new Set());
-            loadFiles();
+            loadFiles(true);
           }}
         />
       )}
@@ -709,7 +715,7 @@ export default function FileManager() {
           onSuccess={(msg) => {
             showResult("success", msg);
             setShowNewFolderModal(false);
-            loadFiles();
+            loadFiles(true);
           }}
         />
       )}
@@ -723,7 +729,7 @@ export default function FileManager() {
             showResult("success", msg);
             setShowMoveModal(false);
             setSelectedFiles(new Set());
-            loadFiles();
+            loadFiles(true);
           }}
         />
       )}
@@ -737,7 +743,7 @@ export default function FileManager() {
             showResult("success", msg);
             setShowCopyModal(false);
             setSelectedFiles(new Set());
-            loadFiles();
+            loadFiles(true);
           }}
         />
       )}

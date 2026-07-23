@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FolderSync,
   Plus,
@@ -260,8 +260,8 @@ function SyncJobCard({
   onSync: () => void;
   onConflicts: () => void;
 }) {
-  const SrcIcon = job.sourceConnection ? getConnectionTypeIcon(job.sourceConnection.type) : FolderSync;
-  const DestIcon = job.destConnection ? getConnectionTypeIcon(job.destConnection.type) : FolderSync;
+  const srcIconComponent = job.sourceConnection ? getConnectionTypeIcon(job.sourceConnection.type) : FolderSync;
+  const destIconComponent = job.destConnection ? getConnectionTypeIcon(job.destConnection.type) : FolderSync;
   const progress = job.filesTotal ? (job.filesSync / job.filesTotal) * 100 : 0;
 
   return (
@@ -316,12 +316,12 @@ function SyncJobCard({
           {/* Connection Flow */}
           <div className="flex items-center gap-2 mt-2 text-sm text-surface-500">
             <div className="flex items-center gap-1.5">
-              <SrcIcon size={14} />
+              {React.createElement(srcIconComponent, { size: 14 })}
               <span className="truncate max-w-[100px]">{job.sourceConnection?.name || "Local"}</span>
             </div>
             <ArrowRightLeft size={14} className="text-surface-300 flex-shrink-0" />
             <div className="flex items-center gap-1.5">
-              <DestIcon size={14} />
+              {React.createElement(destIconComponent, { size: 14 })}
               <span className="truncate max-w-[100px]">{job.destConnection?.name || "Remote"}</span>
             </div>
           </div>

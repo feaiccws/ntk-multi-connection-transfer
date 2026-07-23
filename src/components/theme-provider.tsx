@@ -20,7 +20,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     // Load saved theme
     const saved = localStorage.getItem("theme") as Theme | null;
     if (saved) {
-      setTheme(saved);
+      queueMicrotask(() => {
+        setTheme(saved);
+      });
     }
   }, []);
 
@@ -33,7 +35,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       } else {
         root.classList.remove("dark");
       }
-      setResolvedTheme(t);
+      queueMicrotask(() => {
+        setResolvedTheme(t);
+      });
     };
 
     if (theme === "system") {

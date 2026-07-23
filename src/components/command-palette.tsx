@@ -47,6 +47,20 @@ export default function CommandPalette({
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Synchronize state during render instead of inside effects to avoid cascading renders
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
+  if (isOpen !== prevIsOpen) {
+    setPrevIsOpen(isOpen);
+    setQuery("");
+    setSelectedIndex(0);
+  }
+
+  const [prevQuery, setPrevQuery] = useState(query);
+  if (query !== prevQuery) {
+    setPrevQuery(query);
+    setSelectedIndex(0);
+  }
+
   const commands: CommandItem[] = [
     // Navigation
     { id: "dashboard", title: "Go to Dashboard", icon: Home, action: () => onNavigate("dashboard"), shortcut: "G D", category: "navigation" },
@@ -89,14 +103,8 @@ export default function CommandPalette({
   useEffect(() => {
     if (isOpen) {
       inputRef.current?.focus();
-      setQuery("");
-      setSelectedIndex(0);
     }
   }, [isOpen]);
-
-  useEffect(() => {
-    setSelectedIndex(0);
-  }, [query]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowDown") {

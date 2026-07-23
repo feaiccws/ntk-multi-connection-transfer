@@ -76,7 +76,7 @@ export default function Sidebar({
     return item;
   });
 
-  const NavContent = () => (
+  const renderNavContent = () => (
     <div className="flex flex-col h-full">
       {/* Logo */}
       <div className="px-5 py-5 flex items-center gap-3">
@@ -197,7 +197,7 @@ export default function Sidebar({
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        <NavContent />
+        {renderNavContent()}
       </aside>
     </>
   );

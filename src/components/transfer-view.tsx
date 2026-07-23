@@ -152,7 +152,9 @@ export default function TransferView({ onTransferCreated }: TransferViewProps) {
   }, []);
 
   useEffect(() => {
-    fetchConnections();
+    queueMicrotask(() => {
+      fetchConnections();
+    });
   }, [fetchConnections]);
 
   const sourceConnections = selectedType

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   Plus,
   Search,
@@ -32,8 +32,10 @@ export default function ConnectionsView() {
   >({});
   const [openMenu, setOpenMenu] = useState<string | null>(null);
 
-  const fetchConnections = useCallback(async () => {
-    setLoading(true);
+  const fetchConnections = useCallback(async (showLoading = false) => {
+    if (showLoading) {
+      setLoading(true);
+    }
     try {
       const res = await fetch("/api/connections");
       const data = await res.json();
@@ -45,7 +47,9 @@ export default function ConnectionsView() {
   }, []);
 
   useEffect(() => {
-    fetchConnections();
+    queueMicrotask(() => {
+      fetchConnections(false);
+    });
   }, [fetchConnections]);
 
   const handleTest = async (id: string) => {
@@ -239,7 +243,7 @@ function ConnectionCard({
   isMenuOpen: boolean;
   onMenuToggle: () => void;
 }) {
-  const Icon = getConnectionTypeIcon(connection.type);
+  const connectionIcon = getConnectionTypeIcon(connection.type);
 
   return (
     <div className="bg-white rounded-2xl border border-surface-100 p-5 hover:shadow-lg transition-all duration-300 group relative">
@@ -289,7 +293,7 @@ function ConnectionCard({
 
       <div className="flex items-start gap-4">
         <div className="w-12 h-12 rounded-xl bg-surface-100 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-          <Icon size={24} className="text-surface-600" />
+          {React.createElement(connectionIcon, { size: 24, className: "text-surface-600" })}
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">

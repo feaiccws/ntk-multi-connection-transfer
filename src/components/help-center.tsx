@@ -324,7 +324,7 @@ export default function HelpCenter({ isOpen, onClose }: HelpCenterProps) {
         <div className="px-6 py-4 border-t border-surface-100 bg-surface-50 flex-shrink-0">
           <div className="flex items-center justify-between">
             <p className="text-sm text-surface-500">
-              Can't find what you're looking for?
+              Can&apos;t find what you&apos;re looking for?
             </p>
             <button className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-primary-600 hover:bg-primary-50 rounded-lg">
               <MessageSquare size={16} />

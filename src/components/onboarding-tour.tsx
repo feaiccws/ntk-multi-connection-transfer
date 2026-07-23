@@ -100,11 +100,12 @@ export default function OnboardingTour({ isOpen, onClose, onNavigate }: Onboardi
   const [currentStep, setCurrentStep] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  useEffect(() => {
-    if (isOpen) {
-      setCurrentStep(0);
-    }
-  }, [isOpen]);
+  // Synchronize state during render instead of inside effects to avoid cascading renders
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
+  if (isOpen !== prevIsOpen) {
+    setPrevIsOpen(isOpen);
+    setCurrentStep(0);
+  }
 
   const goToStep = (index: number) => {
     setIsAnimating(true);

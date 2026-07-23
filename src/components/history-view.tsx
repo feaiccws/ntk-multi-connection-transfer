@@ -31,8 +31,10 @@ export default function HistoryView() {
   const [selectedTransfer, setSelectedTransfer] = useState<Transfer | null>(null);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
 
-  const fetchTransfers = useCallback(async () => {
-    setLoading(true);
+  const fetchTransfers = useCallback(async (showLoading = false) => {
+    if (showLoading) {
+      setLoading(true);
+    }
     try {
       const res = await fetch("/api/transfers");
       const data = await res.json();
@@ -44,8 +46,10 @@ export default function HistoryView() {
   }, []);
 
   useEffect(() => {
-    fetchTransfers();
-    const interval = setInterval(fetchTransfers, 3000);
+    queueMicrotask(() => {
+      fetchTransfers(false);
+    });
+    const interval = setInterval(() => fetchTransfers(false), 3000);
     return () => clearInterval(interval);
   }, [fetchTransfers]);
 
@@ -115,7 +119,7 @@ export default function HistoryView() {
           </p>
         </div>
         <button
-          onClick={fetchTransfers}
+          onClick={() => fetchTransfers(true)}
           className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-surface-600 bg-white border border-surface-200 rounded-xl hover:bg-surface-50 transition-colors"
         >
           <RefreshCw size={14} />

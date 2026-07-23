@@ -17,6 +17,10 @@ import {
 import { getConnectionTypeIcon } from "./icons";
 import { formatRelativeTime, cn } from "@/lib/utils";
 
+function generateTemplateId(): string {
+  return Date.now().toString();
+}
+
 interface Template {
   id: string;
   name: string;
@@ -149,7 +153,7 @@ export default function TransferTemplates() {
   const duplicateTemplate = (template: Template) => {
     const newTemplate = {
       ...template,
-      id: Date.now().toString(),
+      id: generateTemplateId(),
       name: `${template.name} (Copy)`,
       usageCount: 0,
       lastUsed: null,
@@ -434,7 +438,7 @@ function TemplateModal({
 
   const handleSave = () => {
     onSave({
-      id: template?.id || Date.now().toString(),
+      id: template?.id || generateTemplateId(),
       name,
       description,
       icon,
